@@ -27,14 +27,17 @@ async function updateWalletInfo() {
     if (walletPublicKey) {
         const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
         const publicKey = new solanaWeb3.PublicKey(walletPublicKey);
-        const balance = await connection.getBalance(publicKey);
-        const balanceInSOL = balance / solanaWeb3.LAMPORTS_PER_SOL;
+        try {
+            const balance = await connection.getBalance(publicKey);
+            const balanceInSOL = balance / solanaWeb3.LAMPORTS_PER_SOL;
+            document.getElementById('walletBalance').innerText = `Balance: ${balanceInSOL.toFixed(2)} SOL`;
 
-        document.getElementById('walletBalance').innerText = `Balance: ${balanceInSOL.toFixed(2)} SOL`;
-
-        // Mock profit/loss; in a real application, this should be fetched from a server or smart contract
-        const profitLoss = (Math.random() * 5 - 2.5).toFixed(2);
-        document.getElementById('profitLoss').innerText = `P/L: ${profitLoss} SOL`;
+            // Mock profit/loss; in a real application, this should be fetched from a server or smart contract
+            const profitLoss = (Math.random() * 5 - 2.5).toFixed(2);
+            document.getElementById('profitLoss').innerText = `P/L: ${profitLoss} SOL`;
+        } catch (err) {
+            console.error('Failed to fetch wallet balance:', err);
+        }
     }
 }
 
@@ -78,6 +81,7 @@ document.getElementById('playButton').addEventListener('click', () => {
         alert('Please connect to Phantom wallet first.');
     }
 });
+
 function drawBird() {
     ctx.fillStyle = '#FFD700';
     ctx.fillRect(bird.x, bird.y, BIRD_WIDTH, BIRD_HEIGHT);
@@ -152,3 +156,4 @@ window.addEventListener('keydown', (e) => {
         bird.velocity = FLAP;
     }
 });
+
