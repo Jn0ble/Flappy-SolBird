@@ -1,10 +1,19 @@
+// Initialize variables
+let walletPublicKey = null;
+let depositAmount = 0.02;
+let gameStarted = false;
+
 // Connect to Phantom Wallet
 document.getElementById('connectButton').addEventListener('click', async () => {
     if (window.solana && window.solana.isPhantom) {
         try {
             const response = await window.solana.connect();
-            document.getElementById('walletAddress').innerText = `Connected wallet: ${response.publicKey.toString()}`;
+            walletPublicKey = response.publicKey.toString();
+            document.getElementById('walletAddress').innerText = `Connected wallet: ${walletPublicKey}`;
             document.getElementById('controls').style.display = 'block';
+            document.getElementById('pregame').style.display = 'none'; // Hide pre-game screen
+            gameStarted = true;
+            updateWalletInfo();
         } catch (err) {
             console.error('Connection to Phantom wallet failed:', err);
         }
@@ -13,11 +22,23 @@ document.getElementById('connectButton').addEventListener('click', async () => {
     }
 });
 
+// Update wallet balance and profit/loss information
+async function updateWalletInfo() {
+    if (walletPublicKey) {
+        // Example mock balance and profit/loss; in a real application, use Solana APIs
+        const balance = (Math.random() * 10).toFixed(2); // Mock balance
+        const profitLoss = (Math.random() * 5 - 2.5).toFixed(2); // Mock profit/loss
+        document.getElementById('walletBalance').innerText = `Balance: ${balance} SOL`;
+        document.getElementById('profitLoss').innerText = `P/L: ${profitLoss} SOL`;
+    }
+}
+
 // Deposit Slider
 const depositSlider = document.getElementById('depositSlider');
-const depositAmount = document.getElementById('depositAmount');
+const depositAmountElem = document.getElementById('depositAmount');
 depositSlider.addEventListener('input', () => {
-    depositAmount.innerText = `${depositSlider.value} SOL`;
+    depositAmount = parseFloat(depositSlider.value);
+    depositAmountElem.innerText = `${depositAmount} SOL`;
 });
 
 // Flappy Bird Game
@@ -31,7 +52,6 @@ const BIRD_HEIGHT = 24;
 const PIPE_WIDTH = 50;
 const PIPE_SPACING = 200;
 const PIPE_SPEED = 2;
-const PROFITABILITY_POINT = 25;
 
 let bird = { x: 50, y: canvas.height / 2, velocity: 0 };
 let pipes = [];
@@ -40,7 +60,7 @@ let score = 0;
 let gameOver = false;
 
 document.getElementById('playButton').addEventListener('click', () => {
-    if (window.solana && window.solana.isPhantom) {
+    if (walletPublicKey && gameStarted) {
         // Start the game
         bird = { x: 50, y: canvas.height / 2, velocity: 0 };
         pipes = [];
@@ -115,3 +135,10 @@ function updateGame() {
     frame++;
     requestAnimationFrame(updateGame);
 }
+
+// Flap when space is pressed
+window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && !gameOver) {
+        bird.velocity = FLAP;
+    }
+});
