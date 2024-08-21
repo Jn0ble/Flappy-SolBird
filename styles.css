@@ -1,0 +1,18 @@
+<style>
+    .cloud {
+        position: absolute;
+        background: #fff;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: float 20s linear infinite;
+    }
+    .cloud1 { width: 100px; height: 60px; }
+    .cloud2 { width: 120px; height: 70px; }
+    .cloud3 { width: 80px; height: 50px; }
+    .cloud4 { width: 150px; height: 90px; }
+    
+    @keyframes float {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+</style>
