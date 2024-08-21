@@ -10,36 +10,83 @@
             text-align: center;
             background-color: #87CEEB;
             color: #333;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
         }
         canvas {
             display: block;
             margin: 0 auto;
             background-color: #fff;
         }
-        #controls {
+        #controls, #pregame {
+            display: none;
+        }
+        #pregame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        #clouds {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .cloud {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+        .cloud1 { width: 100px; height: 60px; }
+        .cloud2 { width: 120px; height: 70px; }
+        .cloud3 { width: 80px; height: 50px; }
+        .cloud4 { width: 150px; height: 90px; }
+        #walletBalance, #profitLoss {
             margin-top: 20px;
-        }
-        #depositSlider {
-            width: 300px;
-        }
-        #walletAddress {
-            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Flappy Bird with Phantom Wallet</h1>
-    <button id="connectButton">Connect to Phantom</button>
-    <p id="walletAddress">No wallet connected</p>
-    
-    <div id="controls" style="display:none;">
-        <label for="depositSlider">Deposit: <span id="depositAmount">0.02 SOL</span></label><br>
-        <input type="range" id="depositSlider" min="0.02" max="0.5" step="0.01" value="0.02">
-        <br><br>
-        <button id="playButton">Play Game</button>
+    <div id="pregame">
+        <h1>Welcome to Flappy Bird!</h1>
+        <p>Instructions:</p>
+        <ul>
+            <li>Click "Connect to Phantom" to connect your wallet.</li>
+            <li>Use the slider to choose your deposit amount.</li>
+            <li>Click "Play Game" to start the game.</li>
+        </ul>
+        <button id="connectButton">Connect to Phantom</button>
+        <p id="walletAddress">No wallet connected</p>
+        <div id="walletBalance">Balance: 0 SOL</div>
+        <div id="profitLoss">P/L: 0 SOL</div>
+        <div id="controls">
+            <label for="depositSlider">Deposit: <span id="depositAmount">0.02 SOL</span></label><br>
+            <input type="range" id="depositSlider" min="0.02" max="0.5" step="0.01" value="0.02">
+            <br><br>
+            <button id="playButton">Play Game</button>
+        </div>
     </div>
     
     <canvas id="gameCanvas" width="320" height="480"></canvas>
+    
+    <div id="clouds">
+        <!-- Clouds -->
+        <div class="cloud cloud1" style="top: 20px; left: 10%;"></div>
+        <div class="cloud cloud2" style="top: 50px; left: 30%;"></div>
+        <div class="cloud cloud3" style="top: 100px; left: 60%;"></div>
+        <div class="cloud cloud4" style="top: 200px; left: 80%;"></div>
+        <div class="cloud cloud1" style="top: 300px; left: 20%;"></div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.53.0/dist/web3.min.js"></script>
     <script src="game.js"></script>
