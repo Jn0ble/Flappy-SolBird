@@ -13,7 +13,7 @@ document.getElementById('connectButton').addEventListener('click', async () => {
             document.getElementById('controls').style.display = 'block';
             document.getElementById('pregame').style.display = 'none'; // Hide pre-game screen
             gameStarted = true;
-            updateWalletInfo();
+            updateWalletInfo(); // Update wallet balance
         } catch (err) {
             console.error('Connection to Phantom wallet failed:', err);
         }
@@ -22,13 +22,18 @@ document.getElementById('connectButton').addEventListener('click', async () => {
     }
 });
 
-// Update wallet balance and profit/loss information
+// Fetch wallet balance
 async function updateWalletInfo() {
     if (walletPublicKey) {
-        // Example mock balance and profit/loss; in a real application, use Solana APIs
-        const balance = (Math.random() * 10).toFixed(2); // Mock balance
-        const profitLoss = (Math.random() * 5 - 2.5).toFixed(2); // Mock profit/loss
-        document.getElementById('walletBalance').innerText = `Balance: ${balance} SOL`;
+        const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
+        const publicKey = new solanaWeb3.PublicKey(walletPublicKey);
+        const balance = await connection.getBalance(publicKey);
+        const balanceInSOL = balance / solanaWeb3.LAMPORTS_PER_SOL;
+
+        document.getElementById('walletBalance').innerText = `Balance: ${balanceInSOL.toFixed(2)} SOL`;
+
+        // Mock profit/loss; in a real application, this should be fetched from a server or smart contract
+        const profitLoss = (Math.random() * 5 - 2.5).toFixed(2);
         document.getElementById('profitLoss').innerText = `P/L: ${profitLoss} SOL`;
     }
 }
@@ -73,7 +78,6 @@ document.getElementById('playButton').addEventListener('click', () => {
         alert('Please connect to Phantom wallet first.');
     }
 });
-
 function drawBird() {
     ctx.fillStyle = '#FFD700';
     ctx.fillRect(bird.x, bird.y, BIRD_WIDTH, BIRD_HEIGHT);
