@@ -67,6 +67,7 @@ document.getElementById('playButton').addEventListener('click', () => {
         frame = 0;
         score = 0;
         gameOver = false;
+        document.getElementById('gameCanvas').style.display = 'block'; // Show game canvas
         requestAnimationFrame(updateGame);
     } else {
         alert('Please connect to Phantom wallet first.');
@@ -108,19 +109,24 @@ function updateGame() {
         gameOver = true;
     }
 
-    // Update pipes
-    if (frame % 90 === 0) {
-        let topHeight = Math.random() * (canvas.height - PIPE_SPACING - 100) + 50;
-        pipes.push({ x: canvas.width, top: topHeight, bottom: canvas.height - PIPE_SPACING - topHeight });
+    // Create new pipes
+    if (frame % PIPE_SPACING === 0) {
+        const top = Math.random() * (canvas.height - 150) + 50;
+        const bottom = canvas.height - top - 150;
+        pipes.push({ x: canvas.width, top, bottom });
     }
-    
+
+    // Move pipes
     pipes.forEach(pipe => {
         pipe.x -= PIPE_SPEED;
         if (pipe.x + PIPE_WIDTH < 0) {
             pipes.shift();
             score++;
         }
-        // Check for collision
+    });
+
+    // Check for collisions
+    pipes.forEach(pipe => {
         if (bird.x + BIRD_WIDTH > pipe.x && bird.x < pipe.x + PIPE_WIDTH &&
             (bird.y < pipe.top || bird.y + BIRD_HEIGHT > canvas.height - pipe.bottom)) {
             gameOver = true;
@@ -131,7 +137,7 @@ function updateGame() {
     drawBird();
     drawPipes();
     drawScore();
-    
+
     frame++;
     requestAnimationFrame(updateGame);
 }
