@@ -3,99 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird with Phantom Wallet</title>
+    <title>Flappy Bird Game</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #87CEEB;
-            color: #333;
-            overflow: hidden;
+            background: #87CEEB; /* Sky blue background */
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
-        canvas {
-            display: block;
-            margin: 0 auto;
-            background-color: #fff;
+        #gameContainer {
+            position: relative;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        #gameCanvas {
+            background: #87CEEB;
+            border: 2px solid #000;
+            display: none; /* Initially hidden */
         }
         #pregame {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: block;
+            margin-bottom: 20px;
         }
-        #clouds {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
+        #controls {
+            display: none;
+        }
+        #depositSlider {
+            width: 300px;
         }
         .cloud {
             position: absolute;
-            background: #fff;
+            background: white;
             border-radius: 50%;
             opacity: 0.8;
-            animation: float 20s linear infinite;
         }
-        .cloud1 { width: 100px; height: 60px; }
-        .cloud2 { width: 120px; height: 70px; }
-        .cloud3 { width: 80px; height: 50px; }
-        .cloud4 { width: 150px; height: 90px; }
-        @keyframes float {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        #controls, #gameCanvas {
-            display: none;
-        }
-        #gameStats {
-            margin-top: 20px;
-        }
+        #cloud1 { width: 100px; height: 60px; top: 10px; left: 10px; }
+        #cloud2 { width: 120px; height: 70px; top: 60px; left: 200px; }
+        #cloud3 { width: 150px; height: 90px; top: 150px; left: 400px; }
+        #cloud4 { width: 80px; height: 50px; top: 220px; left: 600px; }
+        #cloud5 { width: 130px; height: 80px; top: 300px; left: 800px; }
     </style>
 </head>
 <body>
     <div id="pregame">
-        <h1>Welcome to Flappy Bird!</h1>
-        <p>Instructions:</p>
-        <ul>
-            <li>Click "Connect to Phantom" to connect your wallet.</li>
-            <li>Use the slider to choose your deposit amount.</li>
-            <li>Click "Play Game" to start the game.</li>
-        </ul>
+        <h1>Welcome to Flappy Bird</h1>
+        <p>Connect your Phantom wallet to start playing!</p>
         <button id="connectButton">Connect to Phantom</button>
-        <p id="walletAddress">No wallet connected</p>
-        <div id="walletBalance">Balance: 0 SOL</div>
-        <div id="profitLoss">P/L: 0 SOL</div>
-        <div id="controls">
-            <label for="depositSlider">Deposit: <span id="depositAmount">0.02 SOL</span></label><br>
-            <input type="range" id="depositSlider" min="0.02" max="0.5" step="0.01" value="0.02">
-            <br><br>
-            <button id="playButton">Play Game</button>
+        <div id="walletInfo">
+            <p id="walletAddress">Connected wallet: Not connected</p>
+            <p id="walletBalance">Balance: 0 SOL</p>
+            <p id="profitLoss">P/L: 0 SOL</p>
         </div>
     </div>
-    
-    <canvas id="gameCanvas" width="320" height="480"></canvas>
-    
-    <div id="clouds">
-        <div class="cloud cloud1" style="top: 20px; left: 10%;"></div>
-        <div class="cloud cloud2" style="top: 50px; left: 30%;"></div>
-        <div class="cloud cloud3" style="top: 100px; left: 60%;"></div>
-        <div class="cloud cloud4" style="top: 200px; left: 80%;"></div>
-        <div class="cloud cloud1" style="top: 300px; left: 20%;"></div>
+
+    <div id="controls">
+        <input type="range" id="depositSlider" min="0.02" max="0.5" step="0.01" value="0.02">
+        <p>Deposit Amount: <span id="depositAmount">0.02 SOL</span></p>
+        <button id="playButton">Play Game</button>
     </div>
 
-    <div id="gameStats">
-        <div id="walletBalance">Balance: 0 SOL</div>
-        <div id="profitLoss">P/L: 0 SOL</div>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="600" height="400"></canvas>
     </div>
+
+    <!-- Cloud elements -->
+    <div id="cloud1" class="cloud"></div>
+    <div id="cloud2" class="cloud"></div>
+    <div id="cloud3" class="cloud"></div>
+    <div id="cloud4" class="cloud"></div>
+    <div id="cloud5" class="cloud"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.53.0/dist/web3.min.js"></script>
     <script src="game.js"></script>
