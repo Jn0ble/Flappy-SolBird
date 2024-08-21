@@ -19,9 +19,6 @@
             margin: 0 auto;
             background-color: #fff;
         }
-        #controls, #pregame {
-            display: none;
-        }
         #pregame {
             position: absolute;
             top: 50%;
@@ -46,12 +43,20 @@
             background: #fff;
             border-radius: 50%;
             opacity: 0.8;
+            animation: float 20s linear infinite;
         }
         .cloud1 { width: 100px; height: 60px; }
         .cloud2 { width: 120px; height: 70px; }
         .cloud3 { width: 80px; height: 50px; }
         .cloud4 { width: 150px; height: 90px; }
-        #walletBalance, #profitLoss {
+        @keyframes float {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        #controls, #gameCanvas {
+            display: none;
+        }
+        #gameStats {
             margin-top: 20px;
         }
     </style>
@@ -80,12 +85,16 @@
     <canvas id="gameCanvas" width="320" height="480"></canvas>
     
     <div id="clouds">
-        <!-- Clouds -->
         <div class="cloud cloud1" style="top: 20px; left: 10%;"></div>
         <div class="cloud cloud2" style="top: 50px; left: 30%;"></div>
         <div class="cloud cloud3" style="top: 100px; left: 60%;"></div>
         <div class="cloud cloud4" style="top: 200px; left: 80%;"></div>
         <div class="cloud cloud1" style="top: 300px; left: 20%;"></div>
+    </div>
+
+    <div id="gameStats">
+        <div id="walletBalance">Balance: 0 SOL</div>
+        <div id="profitLoss">P/L: 0 SOL</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.53.0/dist/web3.min.js"></script>
