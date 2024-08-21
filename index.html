@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Bird with Phantom Wallet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #87CEEB;
+            color: #333;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background-color: #fff;
+        }
+        #controls {
+            margin-top: 20px;
+        }
+        #depositSlider {
+            width: 300px;
+        }
+        #walletAddress {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Flappy Bird with Phantom Wallet</h1>
+    <button id="connectButton">Connect to Phantom</button>
+    <p id="walletAddress">No wallet connected</p>
+    
+    <div id="controls" style="display:none;">
+        <label for="depositSlider">Deposit: <span id="depositAmount">0.02 SOL</span></label><br>
+        <input type="range" id="depositSlider" min="0.02" max="0.5" step="0.01" value="0.02">
+        <br><br>
+        <button id="playButton">Play Game</button>
+    </div>
+    
+    <canvas id="gameCanvas" width="320" height="480"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.53.0/dist/web3.min.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
