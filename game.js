@@ -154,6 +154,49 @@ function updateGame() {
 window.addEventListener('keydown', (e) => {
     if (e.code === 'Space' && !gameOver) {
         bird.velocity = FLAP;
+        document.addEventListener('DOMContentLoaded', () => {
+    // Setup connection to Solana
+    const { Connection, PublicKey } = window.solanaWeb3;
+    const { WalletAdapterNetwork } = window.solanaWalletAdapterBase;
+    const { PhantomWalletAdapter, SolletWalletAdapter, SlopeWalletAdapter, SolletExtensionWalletAdapter } = window.solanaWalletAdapterSollet;
+    const { WalletProvider } = window.solanaWalletAdapterReact;
+    
+    const network = WalletAdapterNetwork.Devnet;
+    const endpoint = 'https://api.devnet.solana.com';
+    const connection = new Connection(endpoint);
+
+    // Define wallet adapters
+    const wallets = [
+        new PhantomWalletAdapter(),
+        new SolletWalletAdapter(),
+        new SlopeWalletAdapter(),
+        new SolletExtensionWalletAdapter()
+    ];
+
+    const walletProvider = new WalletProvider({
+        wallets: wallets,
+        network: network,
+        connection: connection
+    });
+
+    // Handle wallet connection button click
+    const walletConnectButton = document.getElementById('wallet-connect-btn');
+    
+    walletConnectButton.addEventListener('click', async () => {
+        try {
+            await walletProvider.connect();
+            console.log('Wallet connected:', walletProvider.wallet);
+        } catch (error) {
+            console.error('Error connecting wallet:', error);
+        }
+    });
+
+    // Existing game code
+    // Example: Initialize game
+    // const game = new FlappyBirdGame();
+    // game.start();
+});
+
     }
 });
 
